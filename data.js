@@ -1,6 +1,6 @@
 // server/data.js
 import { readFileSync } from "fs";
-import pool from "../db.js";
+import pool from "./db.js";
 
 class Data {
   getMenuData(lang = "en") {
