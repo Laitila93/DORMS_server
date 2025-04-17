@@ -19,10 +19,10 @@ function sockets(io, socket, data) {
     console.log(`Client disconnected: ${socket.id}`);
   });
 
-  socket.on("getShopData", (lang) => {
+  socket.on("getShopData", async (lang) => {
     console.log(`Request for shop data in language: ${lang}`);
     try {
-      const labels = data.getShopData(lang); // Fetch labels based on language
+      const labels = await data.getShopData(lang); // Fetch labels based on language
       console.log("Shop data:", labels);
       socket.emit("shopData", labels); // Send labels back to the client
     } catch (error) {
