@@ -35,6 +35,17 @@ router.post("/createUser", async (req, res) => {
   }
 });
 
+export default router;
+
+
+
+
+
+
+
+
+
+/*
 // Login (Authenticate User & Issue Access Token)
 router.post("/login", async (req, res) => {
   const { name, password } = req.body || {};
@@ -75,5 +86,5 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ error: "Internal server error." });
   }
 });
+*/
 
-export default router;
