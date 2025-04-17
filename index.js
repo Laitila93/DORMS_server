@@ -42,3 +42,18 @@ const PORT = process.env.PORT || 3000;
 httpServer.listen(PORT, () => {
   console.log(`🚀 Server with Socket.io running on port ${PORT}`);
 });
+
+import pool from "./db.js";
+
+async function testConnection() {
+  try {
+    const [rows] = await pool.query("SELECT 1 + 1 AS result");
+    console.log("✅ Database connection successful! Test query result:", rows[0].result);
+  } catch (err) {
+    console.error("❌ Database connection failed:", err);
+  } finally {
+    pool.end(); // Close the connection pool
+  }
+}
+
+testConnection();

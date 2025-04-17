@@ -23,6 +23,7 @@ function sockets(io, socket, data) {
     console.log(`Request for shop data in language: ${lang}`);
     try {
       const labels = data.getShopData(lang); // Fetch labels based on language
+      console.log("Shop data:", labels);
       socket.emit("shopData", labels); // Send labels back to the client
     } catch (error) {
       console.error("Error fetching shop data:", error);
