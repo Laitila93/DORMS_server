@@ -1,0 +1,66 @@
+{
+	"StartViewLabels": {
+		"creategame": "Skapa nytt spel",
+		"participategame": "Delta i spel",
+		"question": "Fråga",
+		"changeLanguage": "Change language to:",
+		"about": "Om oss",
+		"participateIngame": "Delta i enkäten",
+		"enterprompt": "Ange spel-ID",
+		"rules": "Spelregler",
+		"or": "Eller",
+		"invalidGameId": "ID existerar inte, ange korrekt ID, 4 siffror",
+		"subtitle": "Ett strategiskt matematikspel"
+	},
+
+	"CreateViewLabels": {
+		"whichGame": "Spel-ID",
+		"chooseOperator": "Välj ett räknesätt: ",
+		"chooseNumberOfQuestions": "Välj antal frågor: ",
+		"createGame": "Skapa nytt spel",
+		"changeLanguage": "Change language to: ",
+		"chooseRange": "Välj nummerintervall: ",
+		"returnHome": "Startsida",
+		"errorMessage": "Fyll i alla fält innan du fortsätter.",
+		"custom":"Anpassat (1 - ?)",
+		"enterCustomRange": "Ange anpassat slut på intervall"
+	},
+
+	"LobbyViewLabels": {
+		"whichGame":"Spel-ID",
+		"enterName": "Ange namn: ",
+		"youAre": "Du är: ",
+		"participateInGame": "Gå med",
+		"waitingForOthers": "Väntar på motspelare...",
+		"changeLanguage": "Change language to: ",
+		"returnHome": "Startsida",
+		"notClickable": "Inte klickbar",
+		"clickable": "Klickbar",
+		"takenp1": "Tagen av Spelare 1",
+		"reachp1": "Nåbar av spelare 1",
+		"takenp2": "Tagen av spelare 2",
+		"reachp2": "Nåbar av spelare 2",
+		"reachAll": "Nåbar av båda",
+		"deadNode": "Fel svar (död)",
+		"dominationText": "<h3>Domination</h3>Var snabb och strategisk!<br>Svara snabbt på matematikfrågorna och välj noder smart för att ta över spelbrädet och blockera din motståndare.<br><br>Dominera för att vinna!"
+	},
+
+	"gameViewLabels": {
+		"whichGame": "Spel-ID",
+		"yourScore": "Din poäng",
+		"opponentScore": "Motståndares poäng",
+		"correctAnswer": "Rätt svar!",
+		"wrongAnswer": "Fel svar!",
+		"clickNodePrompt": "Klicka på en blinkande nod!",
+		"gameOver": "Spelet slut",
+		"youWin": "Du vann!",
+		"youLoose": "Du förlorade!",
+		"draw": "Oavgjort",
+		"returnHome": "Startsida",
+		"changeLanguage": "Change language to: ",
+		"giveUp": "Ge upp",
+		"opponentGaveUp": "Motståndaren gav upp",
+		"youGaveUp": "Du gav upp"
+	}
+
+}

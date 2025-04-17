@@ -1,0 +1,21 @@
+{
+	"fish": [
+	  { "name": "Mört", "description": "sdfsdf","price": 500, "image": "goldfish.png" },
+	  { "name": "Harr", "description": "sdfsdf","price": 600,"image": "goldfish.png" },
+	  { "name": "Fimsh", "description": "sdfsdf","price": 300,"image": "goldfish.png" },
+	  { "name": "Abborre", "description": "sdfsdf","price": 100,"image": "goldfish.png" },
+	  { "name": "Abborre", "description": "sdfsdf","price": 100,"image": "goldfish.png" },
+	  { "name": "Fimsh", "description": "sdfsdf","price": 300,"image": "goldfish.png" },
+	  { "name": "Abborre", "description": "sdfsdf","price": 100,"image": "goldfish.png" },
+	  { "name": "Abborre", "description": "sdfsdf","price": 100,"image": "goldfish.png" }
+	],
+	"hats": [
+	  { "name": "Moose hat", "description": "sdfsdf","price": 500, "image": "hornyHat.png" },
+	  { "name": "Tall moose hat", "description": "sdfsdf","price": 600,"image": "tallHornyHat.png" }
+	],
+	"specials": [
+	  { "name": "Raft", "description": "sdfsdf","price": 500, "image": "raft.png" },
+	  { "name": "Raft 2", "description": "sdfsdf","price": 800, "image": "raft.png" }
+	]
+  
+  }
