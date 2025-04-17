@@ -1,5 +1,6 @@
 // server/data.js
 import { readFileSync } from "fs";
+import pool from "../db.js";
 
 class Data {
   getMenuData(lang = "en") {
@@ -13,14 +14,27 @@ class Data {
     }
   }
 
-  getShopData(lang = "en") {
-    const safeLang = ["en", "sv"].includes(lang) ? lang : "en";
-    const labelsPath = `./data/shopData-${safeLang}.json`;
+  async getShopData(lang = "en") {
+    //const safeLang = ["en", "sv"].includes(lang) ? lang : "en";
+
     try {
-      return JSON.parse(readFileSync(labelsPath, "utf-8"));
-    } catch (error) {
-      console.error(`Error reading shop file:`, error);
-      throw new Error("Failed to load shop data.");
+      // Query data from all three tables
+      const [fishes] = await pool.query("SELECT * FROM fishes");
+      const [hats] = await pool.query("SELECT * FROM hats");
+      const [specials] = await pool.query("SELECT * FROM specials");
+
+      // Combine the data into a single object
+      const shopData = {
+        fishes,
+        hats,
+        specials,
+      };
+
+      // Return the data
+      return shopData;
+    } catch (err) {
+      console.error("❌ Error fetching shop data:", err);
+      throw new Error("Failed to fetch shop data.");
     }
   }
 }
