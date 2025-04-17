@@ -51,8 +51,6 @@ async function testConnection() {
     console.log("✅ Database connection successful! Test query result:", rows[0].result);
   } catch (err) {
     console.error("❌ Database connection failed:", err);
-  } finally {
-    pool.end(); // Close the connection pool
   }
 }
 
