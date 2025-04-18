@@ -14,6 +14,16 @@ class Data {
     }
   }
 
+  getWaterData =function() {
+    const waterDataPath = './server/data/testData.json';
+    try {
+      const waterLogData = readFileSync(waterDataPath, 'utf-8');
+      return JSON.parse(waterLogData);
+    } catch (error) {
+      console.error(`Error reading test data file (${waterDataPath}):`, error);
+      throw new Error('Failed to load water data.');
+    }
+  }
   async getShopData(lang = "en") {
     //const safeLang = ["en", "sv"].includes(lang) ? lang : "en";
 
