@@ -14,8 +14,8 @@ class Data {
     }
   }
 
-  getWaterData =function() {
-    const waterDataPath = './server/data/testData.json';
+  getWaterData() {
+    const waterDataPath = './data/testData.json';
     try {
       const waterLogData = readFileSync(waterDataPath, 'utf-8');
       return JSON.parse(waterLogData);

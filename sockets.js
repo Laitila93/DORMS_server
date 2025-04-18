@@ -31,10 +31,10 @@ function sockets(io, socket, data) {
     }
   },
 
-  socket.on("getWaterData", ()=>{
+  socket.on("getWaterData", async ()=>{
     console.log('Request for water data');
     try {
-      const waterLogData = data.getWaterData(); // Fetch testdata
+      const waterLogData = await data.getWaterData(); // Fetch testdata
       socket.emit("waterData", waterLogData); // Send testdata back to the client
     } catch (error) {
       console.error("Error fetching water data:", error);
@@ -42,7 +42,7 @@ function sockets(io, socket, data) {
     }
 
   })
-  
+
 );
 }
 
