@@ -1,7 +1,7 @@
-import { Server, Socket } from "socket.io";
+import { Socket } from "socket.io";
 import { Data } from "./data.js";
 
-function sockets(io: Server, socket: Socket, data: Data): void {
+function sockets(socket: Socket, data: Data): void {
   socket.on("getMenuData", (lang: string) => {
     console.log(`Request for menu data in language: ${lang}`);
     try {
@@ -10,6 +10,16 @@ function sockets(io: Server, socket: Socket, data: Data): void {
     } catch (error) {
       console.error("Error fetching menu data:", error);
       socket.emit("error", { message: "Failed to fetch menu data." });
+    }
+  });
+
+  socket.on("getUnlocks", async (corridor: number) => {
+    try {
+      const shopData = await data.getUnlocks(corridor);
+      socket.emit("shopUnlocks", shopData);
+    } catch (error) {
+      console.error("Error fetching shop unlocks:", error);
+      socket.emit("error", { message: "Failed to fetch shop unlocks." });
     }
   });
 

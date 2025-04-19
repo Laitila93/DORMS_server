@@ -3,6 +3,7 @@ import { readFileSync } from "fs";
 import pool from "./db.js";
 
 interface ShopData {
+  corridor?: number
   fishes: any;
   hats: any;
   specials: any;
@@ -37,7 +38,22 @@ class Data {
       const hats = await pool.query("SELECT * FROM hats");
       const specials = await pool.query("SELECT * FROM specials");
 
-      return { fishes: fishes[0], hats: hats[0], specials: specials[0] };
+      return {fishes: fishes[0], hats: hats[0], specials: specials[0] };
+
+    } catch (err) {
+      console.error("❌ Error fetching shop unlocks:", err);
+      throw new Error("Failed to fetch shop unlocks.");
+    }
+  }
+
+  async getUnlocks(corridor: number): Promise<ShopData> {
+    try {
+      const fishes = await pool.query("SELECT * FROM corridor_fishes WHERE corridor = ?", [corridor]);
+      const hats = await pool.query("SELECT * FROM corridor_hats WHERE corridor = ?", [corridor]);
+      const specials = await pool.query("SELECT * FROM corridor_specials WHERE corridor = ?", [corridor]);
+
+      return { corridor: corridor, fishes: fishes[0], hats: hats[0], specials: specials[0] };
+
     } catch (err) {
       console.error("❌ Error fetching shop data:", err);
       throw new Error("Failed to fetch shop data.");
