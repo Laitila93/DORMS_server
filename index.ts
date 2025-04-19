@@ -34,7 +34,7 @@ const data = new Data();
 // WebSocket setup
 io.on("connection", (socket: Socket) => {
   console.log(`⚡ Client connected: ${socket.id}`);
-  sockets(io, socket, data);
+  sockets(socket, data);
 });
 
 // Start server
