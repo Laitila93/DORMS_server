@@ -46,11 +46,11 @@ class Data {
     }
   }
 
-  async getUnlocks(corridor: number): Promise<ShopData> {
+  async getUnlocks(corridor: number) {
     try {
-      const fishes = await pool.query("SELECT * FROM corridor_fishes WHERE corridor = ?", [corridor]);
-      const hats = await pool.query("SELECT * FROM corridor_hats WHERE corridor = ?", [corridor]);
-      const specials = await pool.query("SELECT * FROM corridor_specials WHERE corridor = ?", [corridor]);
+      const fishes = await pool.query("SELECT * FROM corridor_fishes WHERE dormId = ?", [corridor]);
+      const hats = await pool.query("SELECT * FROM corridor_hats WHERE dormId = ?", [corridor]);
+      const specials = await pool.query("SELECT * FROM corridor_specials WHERE dormId = ?", [corridor]);
 
       return { corridor: corridor, fishes: fishes[0], hats: hats[0], specials: specials[0] };
 
