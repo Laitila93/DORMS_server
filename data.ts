@@ -1,9 +1,15 @@
-// server/data.js
+
 import { readFileSync } from "fs";
 import pool from "./db.js";
 
+interface ShopData {
+  fishes: any;
+  hats: any;
+  specials: any;
+}
+
 class Data {
-  getMenuData(lang = "en") {
+  getMenuData(lang: string = "en"): any {
     const safeLang = ["en", "sv"].includes(lang) ? lang : "en";
     const labelsPath = `./data/menu-${safeLang}.json`;
     try {
@@ -14,7 +20,7 @@ class Data {
     }
   }
 
-  getWaterData() {
+  getWaterData(): any {
     const waterDataPath = './data/testData.json';
     try {
       const waterLogData = readFileSync(waterDataPath, 'utf-8');
@@ -24,24 +30,14 @@ class Data {
       throw new Error('Failed to load water data.');
     }
   }
-  async getShopData(lang = "en") {
-    //const safeLang = ["en", "sv"].includes(lang) ? lang : "en";
 
+  async getShopData(lang: string = "en"): Promise<ShopData> {
     try {
-      // Query data from all three tables
-      const [fishes] = await pool.query("SELECT * FROM fishes");
-      const [hats] = await pool.query("SELECT * FROM hats");
-      const [specials] = await pool.query("SELECT * FROM specials");
+      const fishes = await pool.query("SELECT * FROM fishes");
+      const hats = await pool.query("SELECT * FROM hats");
+      const specials = await pool.query("SELECT * FROM specials");
 
-      // Combine the data into a single object
-      const shopData = {
-        fishes,
-        hats,
-        specials,
-      };
-
-      // Return the data
-      return shopData;
+      return { fishes: fishes[0], hats: hats[0], specials: specials[0] };
     } catch (err) {
       console.error("❌ Error fetching shop data:", err);
       throw new Error("Failed to fetch shop data.");

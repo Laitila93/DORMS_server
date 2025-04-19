@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev:backend": "nodemon index.js"
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev:backend": "nodemon --watch './**/*.ts' --exec ts-node index.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -18,10 +20,15 @@
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.1",
-    "@types/node": "^22.14.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^22.14.1",
+    "@types/socket.io": "^3.0.1",
     "@vue/tsconfig": "^0.7.0",
     "concurrently": "^9.1.2",
     "npm-run-all2": "^7.0.2",
+    "ts-node": "^10.9.2",
     "typescript": "~5.8.0"
   }
 }

@@ -1,45 +1,50 @@
-import express from "express";
+import express, { Router } from "express";
+import type { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import pool from "../db.js";
-import jwt from "jsonwebtoken"; // Import jsonwebtoken
+import jwt from "jsonwebtoken";
 
-const router = express.Router();
-
+const router: Router = express.Router();
+/*
 // Create User
-router.post("/createUser", async (req, res) => {
-  const { name, password } = req.body || {};
+router.post("/createUser", async (req: Request, res: Response) => {
+  const { username, password } = req.body || {};
 
-  if (!name || !password) {
+  if (!username || !password) {
     return res.status(400).json({ error: "Username and password are required." });
   }
 
   try {
-    const [existing] = await pool.query("SELECT * FROM users WHERE username = ?", [name]);
+    const [rows]: [any[], any] = await pool.query(
+      "SELECT * FROM users WHERE username = ?", 
+      [username]
+    );
 
-    if (existing.length > 0) {
+    if (Array.isArray(rows) && rows.length > 0) {
       return res.status(409).json({ error: "User already exists." });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const [result] = await pool.query(
+    const [result]: [any, any] = await pool.query(
       "INSERT INTO users (username, password) VALUES (?, ?)",
-      [name, hashedPassword]
+      [username, hashedPassword]
     );
 
     console.log("✅ Created new user with ID:", result.insertId);
-    res.status(201).json({ success: true, userId: result.insertId });
+    res.status(201).json({ 
+      success: true, 
+      userId: result.insertId 
+    });
   } catch (err) {
     console.error("❌ User creation error:", err);
-    res.status(500).json({ error: "Internal server error." });
+    res.status(500).json({ 
+      error: "Failed to create user. Please try again later." 
+    });
   }
 });
-
+*/
 export default router;
-
-
-
-
 
 
 
