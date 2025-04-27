@@ -61,9 +61,9 @@ class Data {
   }
   async getEquippedFish(corridor: number) {
     try {
-      const [equippedFishes] = await pool.query("SELECT * FROM equipped_fishes WHERE dormId = ?", [corridor]);
-      const [equippedHats] = await pool.query("SELECT * FROM equipped_fish_hats WHERE dormId = ?", [corridor]);
-      const [equippedSpecials] = await pool.query("SELECT * FROM equipped_special WHERE dormId = ?", [corridor]); 
+      const equippedFishes = await pool.query("SELECT * FROM equipped_fishes WHERE dormId = ?", [corridor]);
+      const equippedHats = await pool.query("SELECT * FROM equipped_fish_hats WHERE dormId = ?", [corridor]);
+      const equippedSpecials = await pool.query("SELECT * FROM equipped_special WHERE dormId = ?", [corridor]); 
   
       return {
         corridor: corridor,
