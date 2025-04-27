@@ -22,6 +22,16 @@ function sockets(socket: Socket, data: Data): void {
       socket.emit("error", { message: "Failed to fetch shop unlocks." });
     }
   });
+  // Fetch equipped fish data
+  socket.on("getEquipped", async (corridor: number) => {
+    try {
+      const equippedData = await data.getEquippedFish(corridor);
+      socket.emit("equippedData", equippedData);
+    } catch (error) {
+      console.error("Error fetching equipped data:", error);
+      socket.emit("error", { message: "Failed to fetch equipped data." });
+    }
+  });
 
   socket.on("getShopData", async (lang: string) => {
     console.log(`Request for shop data in language: ${lang}`);
@@ -44,7 +54,8 @@ function sockets(socket: Socket, data: Data): void {
 socket.emit("error", { message: "Failed to fetch water data." });
   }
 
-  })
+  });
+  
 }
 
 export { sockets };

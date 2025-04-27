@@ -59,6 +59,25 @@ class Data {
       throw new Error("Failed to fetch shop data.");
     }
   }
+  async getEquippedFish(corridor: number) {
+    try {
+      const [equippedFishes] = await pool.query("SELECT * FROM equipped_fishes WHERE dormId = ?", [corridor]);
+      const [equippedHats] = await pool.query("SELECT * FROM equipped_fish_hats WHERE dormId = ?", [corridor]);
+      const [equippedSpecials] = await pool.query("SELECT * FROM equipped_special WHERE dormId = ?", [corridor]); 
+  
+      return {
+        corridor: corridor,
+        fishes: equippedFishes[0],
+        hats: equippedHats[0],
+        specials: equippedSpecials[0],
+      };
+  
+    } catch (err) {
+      console.error("❌ Error fetching equipped data:", err);
+      throw new Error("Failed to fetch equipped data.");
+    }
+  }
+  
 }
 
 export { Data };
