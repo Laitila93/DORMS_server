@@ -7,6 +7,7 @@ import { validate } from "../middleware/validate.js";
 const router = express.Router();
 
 router.post("/register", validate(registerSchema), async (req, res) => {
+  console.log("Register endpoint hit"); // Debugging line
   try {
     const { username, password } = req.body;
     const result = await registerUser(username, password);
