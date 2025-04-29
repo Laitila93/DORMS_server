@@ -12,8 +12,8 @@
     { "name": "Leaderboard", "link": "/leaderboard" },
     { "name": "Shop", "link": "/shop" },
     { "name": "Stats", "link": "/stats" },
-    { "name": "Tank", "link": "/tank" },
-    { "name": "Admin", "link": "/admin" }
+    { "name": "Tank", "link": "/tank" }
+
 ],
 "shop": [
     { "name": "Hats", "link": "/" },
