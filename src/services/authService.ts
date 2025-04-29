@@ -59,5 +59,5 @@ export async function loginUser(username: string, password: string) {
   }
   const token = jwt.sign(payload, JWT_SECRET, options);
 
-  return { message: "Login successful", token };
+  return { message: "Login successful", token, userId: user.userId };
 }
