@@ -1,5 +1,5 @@
-
 import { readFileSync } from "fs";
+import { join } from "path";
 import pool from "./db.js";
 
 interface ShopData {
@@ -12,7 +12,7 @@ interface ShopData {
 class Data {
   getMenuData(lang: string = "en"): any {
     const safeLang = ["en", "sv"].includes(lang) ? lang : "en";
-    const labelsPath = `./data/menu-${safeLang}.json`;
+    const labelsPath = join(__dirname, `data/menu-${safeLang}.json`);
     try {
       return JSON.parse(readFileSync(labelsPath, "utf-8"));
     } catch (error) {
