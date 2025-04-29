@@ -1,5 +1,6 @@
 import { readFileSync } from "fs";
-import { join } from "path";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 import pool from "./db.js";
 
 interface ShopData {
@@ -12,22 +13,32 @@ interface ShopData {
 class Data {
   getMenuData(lang: string = "en"): any {
     const safeLang = ["en", "sv"].includes(lang) ? lang : "en";
+
+    // Use import.meta.url to get the current directory
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+
     const labelsPath = join(__dirname, `data/menu-${safeLang}.json`);
     try {
       return JSON.parse(readFileSync(labelsPath, "utf-8"));
     } catch (error) {
-      console.error(`Error reading menu file:`, error);
-      throw new Error("Failed to load menu labels.");
+      console.error(`Error reading menu file at ${labelsPath}:`, error);
+      throw new Error("Failed to load menu labels. Please check the file path and content.");
     }
   }
 
   getWaterData(): any {
-    const waterDataPath = './data/testData.json';
+    // Use import.meta.url to get the current directory
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+
+    // Construct the absolute path to the testData.json file
+    const waterDataPath = join(__dirname, 'data/testData.json');
     try {
       const waterLogData = readFileSync(waterDataPath, 'utf-8');
       return JSON.parse(waterLogData);
     } catch (error) {
-      console.error(`Error reading test data file (${waterDataPath}):`, error);
+      console.error(`Error reading test data file at ${waterDataPath}:`, error);
       throw new Error('Failed to load water data.');
     }
   }
