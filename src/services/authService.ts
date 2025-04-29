@@ -19,6 +19,7 @@ export async function registerUser(username: string, password: string) {
     "SELECT id FROM users WHERE username = ?",
     [username]
   );
+  console.log("Username:", username); // Debugging line
 
   if (rows.length > 0) {
     throw new Error("User already exists.");
@@ -29,7 +30,7 @@ export async function registerUser(username: string, password: string) {
     "INSERT INTO users (username, password) VALUES (?, ?)",
     [username, hashedPassword]
   );
-
+  console.log("Insert result:", result); // Debugging line
   return { userId: result.insertId };
 }
 
@@ -38,7 +39,7 @@ export async function loginUser(username: string, password: string) {
     "SELECT * FROM users WHERE username = ?",
     [username]
   );
-
+  console.log("Login attempt for username:", username); // Debugging line
   const user = rows[0];
   if (!user) {
     throw new Error("Invalid username or password.");
@@ -58,6 +59,7 @@ export async function loginUser(username: string, password: string) {
     throw new Error("JWT_SECRET is not defined.");
   }
   const token = jwt.sign(payload, JWT_SECRET, options);
+  console.log("Generated JWT token:", token); // Debugging line
 
   return { message: "Login successful", token, userId: user.userId };
 }
