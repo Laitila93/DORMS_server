@@ -4,8 +4,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import express, { Application } from "express";
-//import userRoutes from "./routes/users"; // <-- your API routes
+import express from "express";
+import authRoutes from "./routes/authRoutes";
 import { Data } from "./data.js";
 import { sockets } from "./sockets.js";
 import { Socket } from "socket.io";
@@ -26,7 +26,7 @@ const io = new Server(httpServer, {
 // Express middleware
 app.use(cors());
 app.use(express.json());
-//app.use("/api", userRoutes);
+app.use("/api/auth", authRoutes);
 
 // Data handler for socket usage
 const data = new Data();
