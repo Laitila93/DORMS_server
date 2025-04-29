@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import express from "express";
-import authRoutes from "./routes/authRoutes";
+import authRoutes from "./routes/authRoutes.js";
 import { Data } from "./data.js";
 import { sockets } from "./sockets.js";
 import { Socket } from "socket.io";
