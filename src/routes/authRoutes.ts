@@ -1,8 +1,8 @@
 // src/routes/authRoutes.ts
 import express from "express";
-import { registerUser, loginUser } from "../services/authService";
-import { registerSchema, loginSchema } from "../validators/authSchemas";
-import { validate } from "../middleware/validate";
+import { registerUser, loginUser } from "../services/authService.js";
+import { registerSchema, loginSchema } from "../validators/authSchemas.js";
+import { validate } from "../middleware/validate.js";
 
 const router = express.Router();
 
