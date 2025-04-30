@@ -1,7 +1,8 @@
 import { readFileSync } from "fs";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
 import pool from "./db.js";
+import { Pool } from 'pg';
+import dotenv from "dotenv";
+dotenv.config();
 
 interface ShopData {
   corridor?: number
@@ -10,7 +11,42 @@ interface ShopData {
   specials: any;
 }
 
+
+// PostgreSQL connection pool
+const pgPool = new Pool({
+  host: process.env.PG_DB_HOST,
+  user: process.env.PG_DB_USER,
+  password: process.env.PG_DB_PASSWORD,
+  database: process.env.PG_DB_DATABASE,
+  port: process.env.PG_DB_PORT ? parseInt(process.env.PG_DB_PORT, 10) : undefined
+});
+
+// Explicitly test the DB connection
+(async () => {
+  try {
+    const client = await pgPool.connect();
+    console.log('✅ Connected to PostgreSQL database successfully!');
+    client.release();
+  } catch (err) {
+    console.error('❌ Error connecting to the database or creating table:', err);
+  }
+})();
+
 class Data {
+
+  async getDbWaterData(){
+    try {
+      const result = await pgPool.query(`
+        SELECT type, SUM(amount) AS total_usage
+        FROM water_usage
+        GROUP BY type
+      `);
+      return result.rows;
+    } catch (err) {
+      console.error("❌ Error fetching water data from db:", err);
+      throw new Error("Failed to fetch water data from db.");
+    }
+  }
 
   getMenuData(lang: string = "en"): any {
     if (!["en", "sv"].some( el => el === lang))

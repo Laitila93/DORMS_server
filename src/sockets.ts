@@ -2,6 +2,18 @@ import { Socket } from "socket.io";
 import { Data } from "./data.js";
 
 function sockets(socket: Socket, data: Data): void {
+  socket.on("getDbWaterData", async () => {
+    console.log("Request for test water data");
+    try {
+      const waterLogData = await data.getDbWaterData(); // Fetch testdata
+      socket.emit("DbWaterData", waterLogData); // Send testdata back to the client
+    } catch (error) {
+      console.error("Error fetching db water data:", error);
+      socket.emit("error", { message: "Failed to fetch db water data." });
+    }
+  });
+
+
   socket.on("getMenuData", (lang: string) => {
     console.log(`Request for menu data in language: ${lang}`);
     try {
