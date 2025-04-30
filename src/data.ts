@@ -11,36 +11,24 @@ interface ShopData {
 }
 
 class Data {
+
   getMenuData(lang: string = "en"): any {
-    const safeLang = ["en", "sv"].includes(lang) ? lang : "en";
-
-    // Use import.meta.url to get the current directory
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = dirname(__filename);
-
-    const labelsPath = join(__dirname, `data/menu-${safeLang}.json`);
-    console.log(`Loading menu labels from: ${labelsPath}`);
+    if (!["en", "sv"].some( el => el === lang))
+      lang = "en";
     try {
-      return JSON.parse(readFileSync(labelsPath, "utf-8"));
+      const labels = readFileSync("./src/data/labels-" + lang + ".json", 'utf-8');
+      return JSON.parse(labels);
     } catch (error) {
-      console.error(`Error reading menu file at ${labelsPath}:`, error);
       throw new Error("Failed to load menu labels. Please check the file path and content.");
     }
   }
 
   getWaterData(): any {
-    // Use import.meta.url to get the current directory
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = dirname(__filename);
-
-    // Construct the absolute path to the testData.json file
-    const waterDataPath = join(__dirname, 'data/testData.json');
     try {
-      const waterLogData = readFileSync(waterDataPath, 'utf-8');
-      return JSON.parse(waterLogData);
+      const labels = readFileSync("./src/data/testData.json", 'utf-8');
+      return JSON.parse(labels);
     } catch (error) {
-      console.error(`Error reading test data file at ${waterDataPath}:`, error);
-      throw new Error('Failed to load water data.');
+      throw new Error("Failed to load test data. Please check the file path and content.");
     }
   }
 
