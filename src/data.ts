@@ -19,6 +19,7 @@ class Data {
     const __dirname = dirname(__filename);
 
     const labelsPath = join(__dirname, `data/menu-${safeLang}.json`);
+    console.log(`Loading menu labels from: ${labelsPath}`);
     try {
       return JSON.parse(readFileSync(labelsPath, "utf-8"));
     } catch (error) {

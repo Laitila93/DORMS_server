@@ -1,11 +1,11 @@
 {
-"main": [
+  "main": [
     { "name": "Home", "link": "/" },
     { "name": "About", "link": "/about" },
     { "name": "Leaderboard", "link": "/leaderboard" },
     { "name": "Stats", "link": "/stats" }
   ],
-"tank": [
+  "tank": [
     { "name": "Home", "link": "/" },
     { "name": "Challenges", "link": "/challenges" },
     { "name": "About", "link": "/about" },
@@ -13,23 +13,20 @@
     { "name": "Shop", "link": "/shop" },
     { "name": "Stats", "link": "/stats" },
     { "name": "Tank", "link": "/tank" }
-
-],
-"shop": [
+  ],
+  "shop": [
     { "name": "Hats", "link": "/" },
     { "name": "Fish", "link": "/challenges" },
     { "name": "Special", "link": "/about" }
-
-],
-"home": [
+  ],
+  "home": [
     { "name": "About", "link": "/about" },
     { "name": "Leaderboard", "link": "/leaderboard" },
     { "name": "Stats", "link": "/stats" }
-],
-"leaderboard": [
+  ],
+  "leaderboard": [
     { "name": "Home", "link": "/" },
     { "name": "About", "link": "/about" },
     { "name": "Stats", "link": "/stats" }
-]
-
+  ]
 }
