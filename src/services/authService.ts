@@ -16,7 +16,7 @@ if (!JWT_SECRET) {
 
 export async function registerUser(username: string, password: string) {
   const [rows]: [RowDataPacket[], any] = await pool.query(
-    "SELECT id FROM users WHERE username = ?",
+    "SELECT userId FROM users WHERE username = ?",
     [username]
   );
   console.log("Username:", username); // Debugging line
