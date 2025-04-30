@@ -15,8 +15,10 @@ class Data {
   getMenuData(lang: string = "en"): any {
     if (!["en", "sv"].some( el => el === lang))
       lang = "en";
+    console.log("Loading menu labels for language:", lang);
     try {
       const labels = readFileSync("./src/data/labels-" + lang + ".json", 'utf-8');
+      console.log("Loaded menu labels:", labels);
       return JSON.parse(labels);
     } catch (error) {
       throw new Error("Failed to load menu labels. Please check the file path and content.");
