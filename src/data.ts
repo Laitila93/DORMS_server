@@ -17,7 +17,7 @@ class Data {
       lang = "en";
     console.log("Loading menu labels for language:", lang);
     try {
-      const labels = readFileSync("./src/data/labels-" + lang + ".json", 'utf-8');
+      const labels = readFileSync("./src/data/menu-" + lang + ".json", 'utf-8');
       console.log("Loaded menu labels:", labels);
       return JSON.parse(labels);
     } catch (error) {
