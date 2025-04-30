@@ -37,10 +37,10 @@ class Data {
   async getDbWaterData(){
     try {
       const result = await pgPool.query(`
-        SELECT type, SUM(amount) AS total_usage
-        FROM water_usage
-        GROUP BY type
-      `);
+      SELECT *
+      FROM water_usage
+      ORDER BY timestamp DESC
+    `);
       return result.rows;
     } catch (err) {
       console.error("❌ Error fetching water data from db:", err);
