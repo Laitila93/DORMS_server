@@ -13,7 +13,12 @@ router.post("/register", validate(registerSchema), async (req, res) => {
     const result = await registerUser(username, password);
     res.status(201).json(result);
   } catch (err: any) {
-    res.status(409).json({ error: err.message });
+    if (err.message === "User already exists.") {
+      res.status(409).json({ error: err.message });
+    } else {
+      console.error("Unexpected error during registration:", err);
+      res.status(500).json({ error: "Internal server error" });
+    }
   }
 });
 
