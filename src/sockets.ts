@@ -63,9 +63,11 @@ function sockets(socket: Socket, data: Data): void {
       socket.emit("waterData", waterLogData); // Send testdata back to the client
     } catch (error) {
       console.error("Error fetching water data:", error);
-socket.emit("error", { message: "Failed to fetch water data." });
-  }
-
+      socket.emit("error", { message: "Failed to fetch water data." });
+      }
+  });
+  socket.on("updateHat", async (hatID: number)=>{
+    console.log('request for update hat: ', hatID );
   });
   
 }
