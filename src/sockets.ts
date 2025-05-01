@@ -66,8 +66,23 @@ function sockets(socket: Socket, data: Data): void {
       socket.emit("error", { message: "Failed to fetch water data." });
       }
   });
-  socket.on("updateHat", async (hatID: number)=>{
-    console.log('request for update hat: ', hatID );
+  socket.on("updateHat", async (hatData: any)=>{
+    try {
+      await data.updateHat(hatData.hatID, hatData.position, hatData.corridorId);
+      console.log('Hat updated successfully');
+    } catch (error) {
+      console.error('Error updating hat:', error);
+      socket.emit('error', { message: 'Failed to update hat.' });
+      }
+  });
+  socket.on("updateFish", async (fishData: any)=>{
+    try {
+      await data.updateFish(fishData.fishID, fishData.position, fishData.corridorId);
+      console.log('Hat updated successfully');
+    } catch (error) {
+      console.error('Error updating hat:', error);
+      socket.emit('error', { message: 'Failed to update hat.' });
+      }
   });
   
 }
