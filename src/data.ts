@@ -113,7 +113,7 @@ class Data {
       throw new Error("Failed to fetch equipped data.");
     }
   }
-  async updateHat(hatID: any, position: any, corridorId: any) {
+  async updateHat(hatID: number, position: number, corridorId: number) {
     try{
       await pool.query("UPDATE equipped_fish_hats SET hatID = $1 WHERE position = $2 AND dormID = $3", [hatID, position, corridorId]);
     } catch (err) {
@@ -121,7 +121,7 @@ class Data {
       throw new Error('Failed to update hat.');
     }
   }
-  async updateFish(fishID: any, position: any, corridorId: any) {
+  async updateFish(fishID: number, position: number, corridorId: number) {
     try{
       await pool.query("UPDATE equipped_fishes SET fishID = $1 WHERE position = $2 AND dormID = $3", [fishID, position, corridorId]);
     } catch (err) {
