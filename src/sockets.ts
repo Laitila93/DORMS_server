@@ -12,7 +12,15 @@ function sockets(socket: Socket, data: Data): void {
       socket.emit("error", { message: "Failed to fetch db water data." });
     }
   });
-
+  socket.on("populate", async ()=>{
+    console.log('populate equip');
+    try {
+      const populate = await data.populate(); // Fetch testdata
+    } catch (error) {
+      console.error("Error fetching water data:", error);
+      socket.emit("error", { message: "Failed to fetch water data." });
+      }
+  });
 
   socket.on("getMenuData", (lang: string) => {
     console.log(`Request for menu data in language: ${lang}`);
