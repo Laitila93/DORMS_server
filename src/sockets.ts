@@ -2,10 +2,10 @@ import { Socket } from "socket.io";
 import { Data } from "./data.js";
 
 function sockets(socket: Socket, data: Data): void {
-  socket.on("getDbWaterData", async () => {
+  socket.on("getDbWaterData", async (dormID) => {
     console.log("Request for test water data");
     try {
-      const waterLogData = await data.getDbWaterData(); // Fetch testdata
+      const waterLogData = await data.getDbWaterData(dormID); // Fetch testdata
       socket.emit("DbWaterData", waterLogData); // Send testdata back to the client
     } catch (error) {
       console.error("Error fetching db water data:", error);

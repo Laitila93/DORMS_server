@@ -34,13 +34,14 @@ const pgPool = new Pool({
 
 class Data {
 
-  async getDbWaterData(){
+  async getDbWaterData(dormID: number): Promise<any[]> {
     try {
       const result = await pgPool.query(`
       SELECT *
-      FROM water_usage
+      FROM WaterUsage
+      WHERE dormID = ?
       ORDER BY timestamp DESC
-    `);
+    `, [dormID]);
       return result.rows;
     } catch (err) {
       console.error("❌ Error fetching water data from db:", err);
