@@ -3,7 +3,7 @@ import { Data } from "./data.js";
 
 function sockets(socket: Socket, data: Data): void {
   socket.on("getDbWaterData", async (dormID) => {
-    console.log("Request for test water data");
+    console.log("Request for test water data for id:" + dormID);
     try {
       const waterLogData = await data.getDbWaterData(dormID); // Fetch testdata
       socket.emit("DbWaterData", waterLogData); // Send testdata back to the client
@@ -11,15 +11,6 @@ function sockets(socket: Socket, data: Data): void {
       console.error("Error fetching db water data:", error);
       socket.emit("error", { message: "Failed to fetch db water data." });
     }
-  });
-  socket.on("populate", async ()=>{
-    console.log('populate equip');
-    try {
-      const populate = await data.populate(); // Fetch testdata
-    } catch (error) {
-      console.error("Error fetching water data:", error);
-      socket.emit("error", { message: "Failed to fetch water data." });
-      }
   });
 
   socket.on("getMenuData", (lang: string) => {
