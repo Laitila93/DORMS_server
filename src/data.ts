@@ -83,6 +83,17 @@ class Data {
     }
   }
 
+  async populate() {
+    try {
+      const fishes = await pool.query("INSERT INTO equipped_fishes (dormID, fishID, position) VALUES (1, 1, 1), (1, 1, 2), (1, 1, 3);");
+
+      return { fishes};
+
+    } catch (err) {
+      console.error("❌ Error fetching shop data:", err);
+      throw new Error("Failed to fetch shop data.");
+    }
+  }
   async getUnlocks(corridor: number) {
     try {
       const fishes = await pool.query("SELECT * FROM corridor_fishes WHERE dormID = ?", [corridor]);
