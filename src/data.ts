@@ -36,18 +36,22 @@ class Data {
 
   async getDbWaterData(dormID: number): Promise<any[]> {
     try {
-      const result = await pgPool.query(`
-      SELECT *
-      FROM WaterUsage
-      WHERE dormID = ?
-      ORDER BY timestamp DESC
-    `, [dormID]);
+      const result = await pgPool.query(
+        `
+        SELECT *
+        FROM WaterUsage
+        WHERE dorm_id = $1
+        ORDER BY timestamp DESC
+        `,
+        [dormID]
+      );
       return result.rows;
     } catch (err) {
       console.error("❌ Error fetching water data from db:", err);
       throw new Error("Failed to fetch water data from db.");
     }
   }
+  
 
   getMenuData(lang: string = "en"): any {
     if (!["en", "sv"].some( el => el === lang))
@@ -83,17 +87,6 @@ class Data {
     }
   }
 
-  async populate() {
-    try {
-      const fishes = await pool.query("INSERT INTO equipped_fishes (dormID, fishID, position) VALUES (1, 1, 1), (1, 1, 2), (1, 1, 3);");
-
-      return { fishes};
-
-    } catch (err) {
-      console.error("❌ Error fetching shop data:", err);
-      throw new Error("Failed to fetch shop data.");
-    }
-  }
   async getUnlocks(corridor: number) {
     try {
       const fishes = await pool.query("SELECT * FROM corridor_fishes WHERE dormID = ?", [corridor]);
