@@ -84,9 +84,9 @@ class Data {
 
   async getUnlocks(corridor: number) {
     try {
-      const fishes = await pool.query("SELECT * FROM corridor_fishes WHERE dormId = ?", [corridor]);
-      const hats = await pool.query("SELECT * FROM corridor_hats WHERE dormId = ?", [corridor]);
-      const specials = await pool.query("SELECT * FROM corridor_specials WHERE dormId = ?", [corridor]);
+      const fishes = await pool.query("SELECT * FROM corridor_fishes WHERE dormID = ?", [corridor]);
+      const hats = await pool.query("SELECT * FROM corridor_hats WHERE dormID = ?", [corridor]);
+      const specials = await pool.query("SELECT * FROM corridor_specials WHERE dormID = ?", [corridor]);
 
       return { corridor: corridor, fishes: fishes[0], hats: hats[0], specials: specials[0] };
 
@@ -97,9 +97,9 @@ class Data {
   }
   async getEquippedFish(corridor: number) {
     try {
-      const equippedFishes = await pool.query("SELECT * FROM equipped_fishes WHERE dormId = ?", [corridor]);
-      const equippedHats = await pool.query("SELECT * FROM equipped_fish_hats WHERE dormId = ?", [corridor]);
-      const equippedSpecials = await pool.query("SELECT * FROM equipped_special WHERE dormId = ?", [corridor]); 
+      const equippedFishes = await pool.query("SELECT * FROM equipped_fishes WHERE dormID = ?", [corridor]);
+      const equippedHats = await pool.query("SELECT * FROM equipped_fish_hats WHERE dormID = ?", [corridor]);
+      const equippedSpecials = await pool.query("SELECT * FROM equipped_special WHERE dormID = ?", [corridor]); 
   
       return {
         corridor: corridor,
@@ -115,7 +115,7 @@ class Data {
   }
   async updateHat(hatID: number, position: number, corridorId: number) {
     try{
-      await pool.query("UPDATE equipped_fish_hats SET hatID = $1 WHERE position = $2 AND dormID = $3", [hatID, position, corridorId]);
+      await pool.query("UPDATE equipped_fish_hats SET hatID = ? WHERE position = ? AND dormID = ?", [hatID, position, corridorId]);
     } catch (err) {
       console.error('Error updating hat:', err);
       throw new Error('Failed to update hat.');
@@ -123,7 +123,7 @@ class Data {
   }
   async updateFish(fishID: number, position: number, corridorId: number) {
     try{
-      await pool.query("UPDATE equipped_fishes SET fishID = $1 WHERE position = $2 AND dormID = $3", [fishID, position, corridorId]);
+      await pool.query("UPDATE equipped_fishes SET fishID = ? WHERE position = ? AND dormID = ?", [fishID, position, corridorId]);
     } catch (err) {
       console.error('Error updating hat:', err);
       throw new Error('Failed to update hat.');

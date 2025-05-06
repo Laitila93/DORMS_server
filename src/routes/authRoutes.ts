@@ -9,8 +9,8 @@ const router = express.Router();
 router.post("/register", validate(registerSchema), async (req, res) => {
   console.log("Register endpoint hit"); // Debugging line
   try {
-    const { username, password } = req.body;
-    const result = await registerUser(username, password);
+    const { address, username, password } = req.body;
+    const result = await registerUser(address, username, password);
     res.status(201).json(result);
   } catch (err: any) {
     if (err.message === "User already exists.") {

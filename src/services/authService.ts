@@ -14,9 +14,9 @@ if (!JWT_SECRET) {
   throw new Error("❌ JWT_SECRET is not defined in environment variables.");
 }
 
-export async function registerUser(username: string, password: string) {
+export async function registerUser(address: string, username: string, password: string) {
   const [rows]: [RowDataPacket[], any] = await pool.query(
-    "SELECT userId FROM users WHERE username = ?",
+    "SELECT dormID FROM Dorms WHERE username = ?",
     [username]
   );
   console.log("Username:", username); // Debugging line
@@ -27,16 +27,16 @@ export async function registerUser(username: string, password: string) {
 
   const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
   const [result]: [ResultSetHeader, any] = await pool.query(
-    "INSERT INTO users (username, password) VALUES (?, ?)",
-    [username, hashedPassword]
+    "INSERT INTO Dorms (address, username, password) VALUES (?, ?, ?)",
+    [address, username, hashedPassword]
   );
   console.log("Insert result:", result); // Debugging line
-  return { userId: result.insertId };
+  return { dormID: result.insertId };
 }
 
 export async function loginUser(username: string, password: string) {
   const [rows]: [RowDataPacket[], any] = await pool.query(
-    "SELECT * FROM users WHERE username = ?",
+    "SELECT * FROM Dorms WHERE username = ?",
     [username]
   );
   console.log("Login attempt for username:", username); // Debugging line
@@ -50,7 +50,7 @@ export async function loginUser(username: string, password: string) {
     throw new Error("Invalid username or password.");
   }
 
-  const payload = { userId: user.id, username };
+  const payload = { dormID: user.dormID, username };
   const options: SignOptions = {
     expiresIn: JWT_EXPIRATION as StringValue,
   };
@@ -59,7 +59,5 @@ export async function loginUser(username: string, password: string) {
     throw new Error("JWT_SECRET is not defined.");
   }
   const token = jwt.sign(payload, JWT_SECRET, options);
-  console.log("Generated JWT token:", token); // Debugging line
-
-  return { message: "Login successful", token, userId: user.userId };
+  return { message: "Login successful", token, dormID: user.dormID };
 }
