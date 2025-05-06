@@ -84,7 +84,7 @@ class Data {
 
   async populate() {
     try {
-      const fishes = await pool.query("SELECT * INSERT INTO equipped_fishes (dormID, fishID, position) VALUES (1, 1, 1), (1, 1, 2), (1, 1, 3);");
+      const fishes = await pool.query("INSERT INTO equipped_fishes (dormID, fishID, position) VALUES (1, 1, 1), (1, 1, 2), (1, 1, 3);");
 
       return { fishes};
 
