@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev:backend": "nodemon --watch './**/*.ts' --exec ts-node index.ts",
-    "start:scheduler": "ts-node ./jobs/scheduler.ts"
+    "start:scheduler": "node dist/jobs/scheduler.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
