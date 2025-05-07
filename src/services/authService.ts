@@ -16,7 +16,7 @@ if (!JWT_SECRET) {
 
 export async function registerUser(address: string, username: string, password: string) {
   const [rows]: [RowDataPacket[], any] = await pool.query(
-    "SELECT dormID FROM Dorms WHERE username = ?",
+    "SELECT dormID FROM dorms WHERE username = ?",
     [username]
   );
   console.log("Username:", username); // Debugging line
@@ -27,7 +27,7 @@ export async function registerUser(address: string, username: string, password: 
 
   const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
   const [result]: [ResultSetHeader, any] = await pool.query(
-    "INSERT INTO Dorms (address, username, password) VALUES (?, ?, ?)",
+    "INSERT INTO dorms (address, username, password) VALUES (?, ?, ?)",
     [address, username, hashedPassword]
   );
   console.log("Insert result:", result); // Debugging line
@@ -36,7 +36,7 @@ export async function registerUser(address: string, username: string, password: 
 
 export async function loginUser(username: string, password: string) {
   const [rows]: [RowDataPacket[], any] = await pool.query(
-    "SELECT * FROM Dorms WHERE username = ?",
+    "SELECT * FROM dorms WHERE username = ?",
     [username]
   );
   console.log("Login attempt for username:", username); // Debugging line
