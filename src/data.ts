@@ -18,17 +18,13 @@ interface fetchOptions {
   daysBack?: number;
 }
 
-
 // PostgreSQL connection pool
 const pgPool = new Pool({
-  host: "dpg-d07p1f2li9vc73fgua3g-a.frankfurt-postgres.render.com",
-  user: "admin",
-  password: "HlAECKXkUaUdXWSoJ6f5n2u3o2c9NZ7W",
-  database: "water_data",
-  port: 5432,
-  ssl: {
-    rejectUnauthorized: false
-  }
+  host: process.env.PG_DB_HOST,
+  user: process.env.PG_DB_USER,
+  password: process.env.PG_DB_PASSWORD,
+  database: process.env.PG_DB_DATABASE,
+  port: process.env.PG_DB_PORT ? parseInt(process.env.PG_DB_PORT, 10) : undefined
 });
 
 // Explicitly test the DB connection
