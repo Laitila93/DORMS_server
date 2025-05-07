@@ -78,4 +78,8 @@ export interface DailyConsumption {
     return score;
   
   }
+
+  export function dummyCalculator() {
+    console.log("Running calculator...");
+  }
   
