@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev:backend": "nodemon --watch './**/*.ts' --exec ts-node index.ts"
+    "dev:backend": "nodemon --watch './**/*.ts' --exec ts-node index.ts",
+    "start:scheduler": "ts-node ./jobs/scheduler.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -14,6 +15,7 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.14.0",
+    "node-cron": "^3.0.3",
     "nodemon": "^3.1.9",
     "pg": "^8.15.6",
     "socket.io": "^4.8.1",
@@ -27,6 +29,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/ms": "^2.1.0",
     "@types/node": "^22.15.3",
+    "@types/node-cron": "^3.0.11",
     "@types/pg": "^8.11.14",
     "@types/socket.io": "^3.0.1",
     "@vue/tsconfig": "^0.7.0",

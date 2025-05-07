@@ -9,6 +9,8 @@ import authRoutes from "./routes/authRoutes.js";
 import { Data } from "./data.js";
 import { sockets } from "./sockets.js";
 import { Socket } from "socket.io";
+import "./jobs/scheduler";
+console.log('Scoring scheduler started...');
 
 
 dotenv.config();
