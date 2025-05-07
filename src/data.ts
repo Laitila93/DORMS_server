@@ -11,6 +11,12 @@ interface ShopData {
   specials: any;
 }
 
+//Input to getDbWaterDataByRange
+interface fetchOptions {
+  startDate?: Date;
+  endDate?: Date;
+  daysBack?: number;
+}
 
 // PostgreSQL connection pool
 const pgPool = new Pool({
@@ -132,6 +138,96 @@ class Data {
     } catch (err) {
       console.error('Error updating hat:', err);
       throw new Error('Failed to update hat.');
+    }
+  }
+
+  //Function for fetching water consumption data for arbitrary date range
+  async getDbWaterDataByRange(dormID: number, options: fetchOptions): Promise<any[]> {
+      let start: Date | undefined;
+      let end: Date | undefined;
+  
+      if(options.startDate && options.endDate) {
+        start = options.startDate;
+        end = options.endDate;
+      }
+      else if (options.daysBack !== undefined) {
+        start = new Date();
+        end = new Date(); 
+  
+        start.setDate(end.getDate() - options.daysBack);
+        console.log(`Start date: ${start}, end date: ${end}`);
+  
+      } 
+      if(!start || !end) {
+        throw new Error('Please provide either start date and end date or days back');
+      }
+      try {
+        const result = await pgPool.query(
+        `
+        SELECT *
+        FROM WaterUsage
+        WHERE dorm_id = $1 AND (timestamp BETWEEN $2 AND $3)
+        ORDER BY timestamp DESC
+          `,
+        [dormID, start, end]
+      );
+      return result.rows;
+    } catch (err) {
+      console.error("❌ Error fetching water data from db:", err);
+      throw new Error("Failed to fetch water data from db.");
+    }
+  }
+
+  //Function for fetching the current XP held by a corridor
+  async getCurrentXP (corridorID: number): Promise<any> {
+    try {
+      const [rows] : any = await pool.query(
+        `
+        SELECT xp
+        FROM dorms
+        Where dormID = ?
+          `,
+        [corridorID]  
+      );
+
+      const xp = rows[0]?.xp
+
+      if (xp === undefined || xp === null) {
+        throw new Error("XP not found for given corridor ID");
+      }
+      return Number(xp);
+    } catch (err) {
+      console.error("Error fetching XP data from db: ", err);
+      throw new Error ("Failed to fetch XP data from db.")
+    }
+  }
+  //Function for updating a corridor's XP
+  async setNewXP (newXP: number, corridorID: number, timestamp: Date) {
+    try {
+      const updateDorm = await pool.query(
+        `
+        UPDATE dorms
+        SET xp = ?
+        WHERE dormID = ?
+          `,
+        [newXP, corridorID]  
+      );
+    } catch (err1) {
+      console.log("Error updating dorm total xp: ", err1);
+      throw new Error("Failed to update dorm xp");
+    }
+    try {  
+      const updateXPLog = await pool.query(
+        `
+        INSERT INTO xp_log
+        VALUES (?, ?, ?)
+        `,
+        [corridorID, newXP, timestamp]
+      );
+
+    } catch (err2) {
+      console.error("Error updating xp log: ", err2);
+      throw new Error ("Failed to update xp log.")
     }
   }
 }
