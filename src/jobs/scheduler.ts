@@ -1,11 +1,12 @@
 import cron from 'node-cron';
 import dotenv from "dotenv";
 import { updateXP } from '../services/xpUpdateHandler.js';
+import { updateConsumptionFeedback } from '../services/feedbackUpdateHandler.js';
 
 dotenv.config();
 
-
-cron.schedule('*/2 * * * * *',() => { //run every two seconds for testing
+/** 
+cron.schedule('* * * * *',() => { 
   console.log('Running score update...');
   updateXP(),
 
@@ -13,11 +14,14 @@ cron.schedule('*/2 * * * * *',() => { //run every two seconds for testing
   timezone: 'Europe/Stockholm'
   }
 });
-/* 
-cron.schedule('* * * * *',() => { //run every minute for testing
-  console.log('Running feedback update...'),
+*/
+
+cron.schedule('*/15 * * * * *',() => { //run every 15 seconds for testing
+  console.log('Running feedback update...');
+  updateConsumptionFeedback(),
+
   {scheduled: true,
   timezone: 'Europe/Stockholm'
   }
 });
-*/
+
