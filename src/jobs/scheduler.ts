@@ -5,8 +5,8 @@ import { updateConsumptionFeedback } from '../services/feedbackUpdateHandler.js'
 
 dotenv.config();
 
-/** 
-cron.schedule('* * * * *',() => { 
+ 
+cron.schedule('*/1 * * * *',() => { //run every minute for testing
   console.log('Running score update...');
   updateXP(),
 
@@ -14,9 +14,9 @@ cron.schedule('* * * * *',() => {
   timezone: 'Europe/Stockholm'
   }
 });
-*/
 
-cron.schedule('*/15 * * * * *',() => { //run every 15 seconds for testing
+
+cron.schedule('*/1 * * * *',() => { //run every minute for testing
   console.log('Running feedback update...');
   updateConsumptionFeedback(),
 
