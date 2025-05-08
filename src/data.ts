@@ -233,15 +233,14 @@ class Data {
 
   async getDorms(): Promise<number[]> {
     try {
-      const result = await pgPool.query(
-        `SELECT dormID FROM dorms`
-      );
-      return result.rows.map(row => row.dormID);
+      const [rows] = await pool.query(`SELECT dormID FROM dorms`);
+      return (rows as any[]).map(row => row.dormID);
     } catch (err) {
       console.error("❌ Error fetching dormID:", err);
       throw new Error("Failed to fetch dormID from db.");
     }
   }
+  
   
 }
 
