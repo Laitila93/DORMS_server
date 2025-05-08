@@ -60,9 +60,6 @@ io.on("connection", (socket: Socket) => {
     console.log(`🟡 Unauthenticated socket connected: ${socket.id}`);
   }
 
-  // Always allow socket to connect — but control what they can do in handlers
-  sockets(socket, data, dormID ?? 0);
-
   socket.on("disconnect", () => {
     console.log(`❌ Socket disconnected: ${socket.id}`);
   });

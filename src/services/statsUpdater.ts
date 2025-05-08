@@ -19,7 +19,6 @@ export async function updateStats(corridorIDs: number[]) {
     try {
       const rawData: RawReading[] = await dataInstance.getDbWaterDataByRange(corridorId, { daysBack: days });
       const convertedData: HourlyConsumption[] = convertToHourlyConsumption(rawData);
-      console.log('Last 24 hours consumption:', convertedData);
 
       // ✅ Emit stats to connected clients in the appropriate room
       io.to(`dorm-${corridorId}`).emit("stats:update", { stats: convertedData });
