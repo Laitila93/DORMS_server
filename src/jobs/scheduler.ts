@@ -2,11 +2,12 @@ import cron from 'node-cron';
 import dotenv from "dotenv";
 import { updateXP } from '../services/xpUpdateHandler.js';
 import { updateConsumptionFeedback } from '../services/feedbackUpdateHandler.js';
+import { updateStats } from '../services/statsUpdater.js'
 
 dotenv.config();
 
- 
-cron.schedule('*/1 * * * *',() => { //run every minute for testing
+ /* PASSIVATED until we're connected to client and can test everything /Emil
+cron.schedule('* * * * *',() => { 
   console.log('Running score update...');
   updateXP(),
 
@@ -16,7 +17,7 @@ cron.schedule('*/1 * * * *',() => { //run every minute for testing
 });
 
 
-cron.schedule('*/1 * * * *',() => { //run every minute for testing
+cron.schedule('* * * * *',() => { //run every minute for testing
   console.log('Running feedback update...');
   updateConsumptionFeedback(),
 
@@ -24,4 +25,14 @@ cron.schedule('*/1 * * * *',() => { //run every minute for testing
   timezone: 'Europe/Stockholm'
   }
 });
+
+cron.schedule('* * * * *',() => { //run every minute for testing
+  console.log('Running stats update...');
+  updateStats(),
+
+  {scheduled: true,
+  timezone: 'Europe/Stockholm'
+  }
+});
+*/
 
