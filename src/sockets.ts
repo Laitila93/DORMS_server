@@ -1,5 +1,6 @@
 import { Socket } from "socket.io";
 import { Data } from "./data.js";
+import { updateConsumptionFeedback } from "./services/feedbackUpdateHandler.js";
 
 function sockets(socket: Socket, data: Data, dormID: number): void {
   if (!dormID || dormID === 0) {
@@ -7,7 +8,7 @@ function sockets(socket: Socket, data: Data, dormID: number): void {
     socket.emit("unauthorized", { message: "Authentication required." });
     return;
   }
-  
+
   socket.on("getDbWaterData", async (dormID) => {
     console.log("Request for test water data for id:" + dormID);
     try {
@@ -88,6 +89,23 @@ function sockets(socket: Socket, data: Data, dormID: number): void {
       console.error('Error updating hat:', error);
       socket.emit('error', { message: 'Failed to update hat.' });
       }
+  });
+  socket.on("getXp", async (corridor: number) => {
+    try {
+      const xp = await data.getCurrentXP(corridor);
+      socket.emit("xp", xp);
+    } catch (error) {
+      console.error("Error fetching XP:", error);
+      socket.emit("error", { message: "Failed to fetch XP." });
+    }
+  });
+  socket.on(("getFeedback"), async (corridor: number) => {
+    try {
+      updateConsumptionFeedback([corridor]); // Call the function to update feedback
+    } catch (error) {
+      console.error("Error fetching feedback:", error);
+      socket.emit("error", { message: "Failed to fetch feedback." });
+    }
   });
   
 }

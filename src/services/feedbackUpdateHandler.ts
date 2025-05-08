@@ -42,6 +42,7 @@ export async function updateConsumptionFeedback(corridorIDs: number[]) {
       console.error(`❌ Failed to update feedback for corridor ${corridorId}:`, err);
     }
   }
+  
 }
 
 
