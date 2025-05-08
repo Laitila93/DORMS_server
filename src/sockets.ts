@@ -1,7 +1,13 @@
 import { Socket } from "socket.io";
 import { Data } from "./data.js";
 
-function sockets(socket: Socket, data: Data): void {
+function sockets(socket: Socket, data: Data, dormID: number): void {
+  if (!dormID || dormID === 0) {
+    console.warn(`⚠️ Unauthorized socket (${socket.id}) attempted to access restricted features.`);
+    socket.emit("unauthorized", { message: "Authentication required." });
+    return;
+  }
+  
   socket.on("getDbWaterData", async (dormID) => {
     console.log("Request for test water data for id:" + dormID);
     try {

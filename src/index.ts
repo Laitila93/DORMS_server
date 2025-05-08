@@ -10,6 +10,7 @@ import { Data } from "./data.js";
 import { sockets } from "./sockets.js";
 import { Socket } from "socket.io";
 import "./jobs/scheduler.js";
+import jwt from "jsonwebtoken";
 console.log('Scoring scheduler started...');
 
 
@@ -33,11 +34,38 @@ app.use("/api/auth", authRoutes);
 // Data handler for socket usage
 const data = new Data();
 
+// Use example io.to(`dorm-${dormID}`).emit("score:update", { newScore: 50 });
 // WebSocket setup
 io.on("connection", (socket: Socket) => {
-  console.log(`⚡ Client connected: ${socket.id}`);
-  sockets(socket, data);
+  const token = socket.handshake.auth.token;
+
+  let dormID: number | null = null;
+
+  if (token) {
+    try {
+      const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
+      dormID = decoded.dormID;
+
+      if (dormID) {
+        socket.join(`dorm-${dormID}`);
+        console.log(`✅ Authenticated socket ${socket.id} joined dorm room: dorm-${dormID}`);
+      }
+    } catch (err) {
+      console.warn(`⚠️ Invalid token for socket ${socket.id}, continuing unauthenticated.`);
+    }
+  } else {
+    console.log(`🟡 Unauthenticated socket connected: ${socket.id}`);
+  }
+
+  // Always allow socket to connect — but control what they can do in handlers
+  sockets(socket, data, dormID ?? 0);
+
+  socket.on("disconnect", () => {
+    console.log(`❌ Socket disconnected: ${socket.id}`);
+  });
 });
+
+
 
 // Start server
 const PORT = process.env.PORT || 3000;
