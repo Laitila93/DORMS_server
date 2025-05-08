@@ -12,31 +12,29 @@ let dorms = await data.getDorms();
 console.log("Dorms: ", dorms);
 
 
-cron.schedule('* * * * *',() => { 
+cron.schedule('0 8 * * *', () => { 
   console.log('Running score update...');
-  updateXP(dorms),
-
-  {scheduled: true,
+  updateXP(dorms);
+}, {
+  scheduled: true,
   timezone: 'Europe/Stockholm'
-  }
 });
 
 
-cron.schedule('* * * * *',() => { //run every minute for testing
+
+cron.schedule('0 8 * * *',() => { //run every minute for testing
   console.log('Running feedback update...');
-  updateConsumptionFeedback(dorms),
-
-  {scheduled: true,
+  updateConsumptionFeedback(dorms);
+  }, {
+  scheduled: true,
   timezone: 'Europe/Stockholm'
-  }
 });
 
-cron.schedule('* * * * *',() => { //run every minute for testing
+cron.schedule('0 8 * * *',() => { //run every minute for testing
   console.log('Running stats update...');
-  updateStats(dorms),
-
-  {scheduled: true,
+  updateStats(dorms);
+  }, {
+  scheduled: true,
   timezone: 'Europe/Stockholm'
-  }
 });
 
