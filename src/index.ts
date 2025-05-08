@@ -7,8 +7,8 @@ import { Server } from "socket.io";
 import express from "express";
 import authRoutes from "./routes/authRoutes.js";
 import { Data } from "./data.js";
-import { sockets } from "./sockets.js";
 import { Socket } from "socket.io";
+import { sockets } from "./sockets.js";
 import "./jobs/scheduler.js";
 import jwt from "jsonwebtoken";
 import { setIO } from "./routes/socketManager.js";
@@ -52,6 +52,7 @@ io.on("connection", (socket: Socket) => {
       if (dormID) {
         socket.join(`dorm-${dormID}`);
         console.log(`✅ Authenticated socket ${socket.id} joined dorm room: dorm-${dormID}`);
+        sockets(socket, data, dormID); // <-- You must call this
       }
     } catch (err) {
       console.warn(`⚠️ Invalid token for socket ${socket.id}, continuing unauthenticated.`);
