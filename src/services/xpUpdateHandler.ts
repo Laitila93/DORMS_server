@@ -12,41 +12,42 @@ ________________________________________________________________________________
 
 
 import dotenv from "dotenv";
-import { Data } from "../data.js"
-import { convertToDailyConsumption } from "./waterDataConverter.js";
-import { calculateScore } from "./xpCalculator.js";
-import type { RawReading } from "./waterDataConverter.js";
-import type { DailyConsumption } from "./xpCalculator.js";
+import { Data } from "../data.js";
+import { convertToDailyConsumption } from "../middleware/waterDataConverter.js";
+import { calculateScore } from "../middleware/xpCalculator.js";
+import type { RawReading } from "../middleware/waterDataConverter.js";
+import type { DailyConsumption } from "../middleware/xpCalculator.js";
+import { getIO } from "../routes/socketManager.js";
 
 dotenv.config();
 
-const corridorIDs = [1, 2]; //Placeholder, we need something that loads the currently registered corridor ID:s
-const days = 32; //XP is computed based on comparing the past 7 days to a moving average of the past 30 days
-// I've set it to 32 to ensure we get enough days from the testdata currently on the server. If we receive more than
-//30 days past, the XP calculator handles this by slicing the array.
+const days = 32;
 const dataInstance = new Data();
 
-export async function updateXP() {
+export async function updateXP(corridorIDs: number[]) {
+  const io = getIO(); // 👈 Get Socket.IO instance
 
-  for (let slot = 0 ; slot < corridorIDs.length ; slot++) {
-    console.log('Running updateXP for corridor: ', corridorIDs[slot]);
+  for (let slot = 0; slot < corridorIDs.length; slot++) {
+    const corridorId = corridorIDs[slot];
+    console.log('Running updateXP for corridor:', corridorId);
 
-    //Load raw water data from IoT database and convert it inot valid input for the water xp calculator
-    const rawData : RawReading[] = await dataInstance.getDbWaterDataByRange(corridorIDs[slot], {daysBack: days});
-    const convertedData : DailyConsumption[] = convertToDailyConsumption(rawData);
-    console.log('ConsumptionHistory: ', convertedData);
-    
-    //Load current XP from database, compute xp gained during this day and increment
-    const prevXP = await dataInstance.getCurrentXP(corridorIDs[slot]); 
-    console.log('Fetched previous xp from db: ', prevXP)
-    const updatedXP = prevXP + calculateScore(convertedData);
-    console.log('New XP: ', updatedXP);
-    
+    try {
+      const rawData: RawReading[] = await dataInstance.getDbWaterDataByRange(corridorId, { daysBack: days });
+      const convertedData: DailyConsumption[] = convertToDailyConsumption(rawData);
+      const prevXP = await dataInstance.getCurrentXP(corridorId);
+      const updatedXP = prevXP + calculateScore(convertedData);
 
-    //Update database with the new XP for the corridor
-    const timestamp = new Date();
-    dataInstance.setNewXP(updatedXP, corridorIDs[slot], timestamp); 
+      console.log('New XP:', updatedXP);
 
+      const timestamp = new Date();
+      await dataInstance.setNewXP(updatedXP, corridorId, timestamp); // Await to ensure it's written
+
+      // ✅ Emit to room
+      io.to(`dorm-${corridorId}`).emit("xp:update", { updatedXP });
+
+      console.log(`📤 Emitted XP update to dorm-${corridorId}`);
+    } catch (err) {
+      console.error(`❌ Failed to update XP for corridor ${corridorId}:`, err);
+    }
   }
-  
 }

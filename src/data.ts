@@ -230,6 +230,19 @@ class Data {
       throw new Error ("Failed to update xp log.")
     }
   }
+
+  async getDorms(): Promise<number[]> {
+    try {
+      const result = await pgPool.query(
+        `SELECT dormID FROM dorms`
+      );
+      return result.rows.map(row => row.dormID);
+    } catch (err) {
+      console.error("❌ Error fetching dormID:", err);
+      throw new Error("Failed to fetch dormID from db.");
+    }
+  }
+  
 }
 
 export { Data };

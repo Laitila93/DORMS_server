@@ -8,33 +8,40 @@ ________________________________________________________________________________
 
 import dotenv from "dotenv";
 import { Data } from "../data.js"
-import { convertToDailyConsumption } from "./waterDataConverter.js";
-import { updateFeedbackScore } from "./feedbackScoreCalculator.js";
-import type { RawReading } from "./waterDataConverter.js";
-import type { DailyConsumption } from "./xpCalculator.js";
+import { convertToDailyConsumption } from "../middleware/waterDataConverter.js";
+import { updateFeedbackScore } from "../middleware/feedbackScoreCalculator.js";
+import type { RawReading } from "../middleware/waterDataConverter.js";
+import type { DailyConsumption } from "../middleware/xpCalculator.js";
+import { getIO } from "../routes/socketManager.js";
 
 dotenv.config();
 
-const corridorIDs = [1, 2]; //Placeholder, we need something that loads the currently registered corridor ID:s
 const days = 9; //Feedbackscore is computed based on comparing the past 24 hours to a moving average of the previous 7 days
                 // I've set it to 9 to ensure we get enough days from the testdata currently on the server
 const dataInstance = new Data();
 
-export async function updateConsumptionFeedback() {
+export async function updateConsumptionFeedback(corridorIDs: number[]) {
+  const io = getIO(); // 👈 Access initialized Socket.IO server
 
-  for (let slot = 0 ; slot < corridorIDs.length ; slot++) {
-    console.log('Running updateConsumptionFeedback for corridor: ', corridorIDs[slot]);
+  for (let slot = 0; slot < corridorIDs.length; slot++) {
+    const corridorId = corridorIDs[slot];
+    console.log('Running updateConsumptionFeedback for corridor:', corridorId);
 
-    //Load raw water data from IoT database and convert it inot valid input for the water xp calculator
-    const rawData : RawReading[] = await dataInstance.getDbWaterDataByRange(corridorIDs[slot], {daysBack: days});
-    const history : DailyConsumption[] = convertToDailyConsumption(rawData);
-    console.log('ConsumptionHistory: ', history);
+    try {
+      const rawData: RawReading[] = await dataInstance.getDbWaterDataByRange(corridorId, { daysBack: days });
+      const history: DailyConsumption[] = convertToDailyConsumption(rawData);
+      const feedbackScore = updateFeedbackScore(history);
 
-    const feedbackScore = updateFeedbackScore(history);
-    console.log("Feedback score: ", feedbackScore);
+      console.log("Feedback score:", feedbackScore);
 
+      // ✅ Emit to the specific room
+      io.to(`dorm-${corridorId}`).emit("feedback:update", { feedbackScore });
+
+      console.log(`📤 Emitted feedback score to dorm-${corridorId}`);
+    } catch (err) {
+      console.error(`❌ Failed to update feedback for corridor ${corridorId}:`, err);
+    }
   }
-  
 }
 
 

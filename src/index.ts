@@ -11,6 +11,7 @@ import { sockets } from "./sockets.js";
 import { Socket } from "socket.io";
 import "./jobs/scheduler.js";
 import jwt from "jsonwebtoken";
+import { setIO } from "./routes/socketManager.js";
 console.log('Scoring scheduler started...');
 
 
@@ -25,6 +26,8 @@ const io = new Server(httpServer, {
     credentials: true,
   },
 });
+
+setIO(io); // 👈 Register the io instance
 
 // Express middleware
 app.use(cors());
