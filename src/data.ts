@@ -189,7 +189,7 @@ class Data {
           `,
         [corridorID]  
       );
-      console.log("Query result:", rows);
+      console.log("Query result:", rows, corridorID);
 
       const xp = rows[0]?.xp
 
