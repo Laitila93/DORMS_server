@@ -7,6 +7,7 @@ export const validate = (schema: ZodSchema) => (req: Request, res: Response, nex
     schema.parse(req.body);
     next();
   } catch (err: any) {
-    res.status(400).json({ error: err.errors });
+    const errorMessage = err.errors ? JSON.stringify(err.errors) : "Invalid request data";
+    res.status(400).send(errorMessage);
   }
 };
