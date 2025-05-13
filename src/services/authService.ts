@@ -30,8 +30,28 @@ export async function registerUser(address: string, username: string, password: 
     "INSERT INTO dorms (address, username, password) VALUES (?, ?, ?)",
     [address, username, hashedPassword]
   );
-  console.log("Insert result:", result); // Debugging line
-  return { dormID: result.insertId };
+  const dormID = result.insertId;
+  console.log("dormID gotten from db while creating user:", dormID)
+  
+  const addFish = await pool.query(
+    "INSERT INTO equipped_fishes (dormID, fishID, position) VALUES (?, 2, 1),(?, 2, 2),(?, 2, 3),(?, 2, 4),(?, 2, 5),(?, 2, 6)",
+    [dormID]
+  );
+
+  const addHat = await pool.query(
+    "INSERT INTO equipped_fish_hats (dormID, position, hatID) VALUES (?, 1, 1), (?, 2, 1), (?, 3, 1), (?, 4, 1), (?, 5, 1), (?, 6, 1)",
+    [dormID]
+  );
+    const addSpecial = await pool.query(
+    "INSERT INTO equipped_special (dormID, specialID) VALUES (?, 1)",
+    [dormID]
+  );
+    const addBackground = await pool.query(
+    "INSERT INTO equipped_background (dormID, background) VALUES (?, 'https://i.imgur.com/9T34bA9.png')",
+    [dormID]
+  );
+  console.log("Insert result:", result, addHat, addFish, addBackground); // Debugging line
+  return { dormID: dormID };
 }
 
 export async function loginUser(username: string, password: string) {
