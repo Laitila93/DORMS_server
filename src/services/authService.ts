@@ -35,12 +35,12 @@ export async function registerUser(address: string, username: string, password: 
   
   const addFish = await pool.query(
     "INSERT INTO equipped_fishes (dormID, fishID, position) VALUES (?, 2, 1),(?, 2, 2),(?, 2, 3),(?, 2, 4),(?, 2, 5),(?, 2, 6)",
-    [dormID]
+    [dormID, dormID, dormID, dormID, dormID, dormID]
   );
 
   const addHat = await pool.query(
     "INSERT INTO equipped_fish_hats (dormID, position, hatID) VALUES (?, 1, 1), (?, 2, 1), (?, 3, 1), (?, 4, 1), (?, 5, 1), (?, 6, 1)",
-    [dormID]
+    [dormID, dormID, dormID, dormID, dormID, dormID]
   );
     const addSpecial = await pool.query(
     "INSERT INTO equipped_special (dormID, specialID) VALUES (?, 1)",
