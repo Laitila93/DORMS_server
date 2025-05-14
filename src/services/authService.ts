@@ -5,7 +5,6 @@ import pool from "../db.js";
 import type { RowDataPacket, ResultSetHeader } from "mysql2";
 import type { StringValue } from "ms";
 
-
 const SALT_ROUNDS = parseInt(process.env.BCRYPT_SALT_ROUNDS || "10", 10);
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRATION = process.env.JWT_EXPIRATION || "1h";
@@ -15,23 +14,60 @@ if (!JWT_SECRET) {
 }
 
 export async function registerUser(address: string, username: string, password: string) {
-  const [rows]: [RowDataPacket[], any] = await pool.query(
-    "SELECT dormID FROM dorms WHERE username = ?",
-    [username]
-  );
-  console.log("Username:", username); // Debugging line
+  const connection = await pool.getConnection();
+  await connection.beginTransaction();
 
-  if (rows.length > 0) {
-    throw new Error("User already exists.");
+  try {
+    const [rows]: [RowDataPacket[], any] = await connection.query(
+      "SELECT dormID FROM dorms WHERE username = ?",
+      [username]
+    );
+    console.log("Username:", username); // Debugging line
+
+    if (rows.length > 0) {
+      throw new Error("User already exists.");
+    }
+
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    const [result]: [ResultSetHeader, any] = await connection.query(
+      "INSERT INTO dorms (address, username, password) VALUES (?, ?, ?)",
+      [address, username, hashedPassword]
+    );
+    const dormID = result.insertId;
+    console.log("dormID gotten from db while creating user:", dormID);
+
+    await connection.query(
+      "INSERT INTO equipped_fishes (dormID, fishID, position) VALUES (?, 2, 1), (?, 2, 2), (?, 2, 3), (?, 2, 4), (?, 2, 5), (?, 2, 6)",
+      [dormID, dormID, dormID, dormID, dormID, dormID]
+    );
+
+    await connection.query(
+      "INSERT INTO equipped_fish_hats (dormID, position, hatID) VALUES (?, 1, 1), (?, 2, 1), (?, 3, 1), (?, 4, 1), (?, 5, 1), (?, 6, 1)",
+      [dormID, dormID, dormID, dormID, dormID, dormID]
+    );
+
+    await connection.query(
+      "INSERT INTO equipped_special (dormID, specialID) VALUES (?, 1)",
+      [dormID]
+    );
+
+    await connection.query(
+      "INSERT INTO equipped_background (dormID, background) VALUES (?, ?)",
+      [dormID, 'https://i.imgur.com/9T34bA9.png']
+    );
+
+    await connection.commit();
+    console.log("User registration committed successfully.");
+    return { dormID };
+
+  } catch (error) {
+    await connection.rollback();
+    console.error("Transaction rolled back due to error:", error);
+    throw error;
+
+  } finally {
+    connection.release();
   }
-
-  const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-  const [result]: [ResultSetHeader, any] = await pool.query(
-    "INSERT INTO dorms (address, username, password) VALUES (?, ?, ?)",
-    [address, username, hashedPassword]
-  );
-  console.log("Insert result:", result); // Debugging line
-  return { dormID: result.insertId };
 }
 
 export async function loginUser(username: string, password: string) {
@@ -40,6 +76,7 @@ export async function loginUser(username: string, password: string) {
     [username]
   );
   console.log("Login attempt for username:", username); // Debugging line
+
   const user = rows[0];
   if (!user) {
     throw new Error("Invalid username or password.");
@@ -54,10 +91,7 @@ export async function loginUser(username: string, password: string) {
   const options: SignOptions = {
     expiresIn: JWT_EXPIRATION as StringValue,
   };
-  
-  if (!JWT_SECRET) {
-    throw new Error("JWT_SECRET is not defined.");
-  }
-  const token = jwt.sign(payload, JWT_SECRET, options);
+
+  const token = jwt.sign(payload, JWT_SECRET!, options);
   return { message: "Login successful", token, dormID: user.dormID };
 }
