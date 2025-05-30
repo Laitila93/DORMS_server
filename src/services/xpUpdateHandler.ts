@@ -29,7 +29,6 @@ export async function updateXP(corridorIDs: number[]) {
 
   for (let slot = 0; slot < corridorIDs.length; slot++) {
     const corridorId = corridorIDs[slot];
-    console.log('Running updateXP for corridor:', corridorId);
 
     try {
       const rawData: RawReading[] = await dataInstance.getDbWaterDataByRange(corridorId, { daysBack: days });
@@ -37,15 +36,12 @@ export async function updateXP(corridorIDs: number[]) {
       const prevXP = await dataInstance.getCurrentXP(corridorId);
       const updatedXP = prevXP + calculateScore(convertedData);
 
-      console.log('New XP:', updatedXP);
-
       const timestamp = new Date();
       await dataInstance.setNewXP(updatedXP, corridorId, timestamp); // Await to ensure it's written
 
       // ✅ Emit to room
       io.to(`dorm-${corridorId}`).emit("xp:update", { updatedXP });
 
-      console.log(`📤 Emitted XP update to dorm-${corridorId}`);
     } catch (err) {
       console.error(`❌ Failed to update XP for corridor ${corridorId}:`, err);
     }

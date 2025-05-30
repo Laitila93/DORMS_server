@@ -1,3 +1,21 @@
+/**
+ * Calculates a feedback score based on the comparison between the latest consumption value
+ * and the average of the previous 7 days' consumption.
+ * 
+ * The function analyzes consumption patterns by comparing the most recent day's consumption
+ * against a 7-day moving average. It returns a normalized score between 0 and 100, where:
+ * - A score of 66.67 represents consumption equal to the 7-day average (100/1.5)
+ * - A score of 100 represents consumption at 150% or more of the 7-day average
+ * - A score of 0 is returned for invalid data or insufficient history
+ * 
+ * @param history - Array of daily consumption records, ordered chronologically
+ * @returns A number between 0 and 100 representing the feedback score. 
+ * Returns 0 if:
+ * - The history array is empty
+ * - There's insufficient data (less than 8 days of history)
+ * - The last day's consumption is invalid
+ * - The 7-day average consumption is 0
+ */
 import type { DailyConsumption } from "./xpCalculator";
 
 export function updateFeedbackScore(history: DailyConsumption[]) {

@@ -1,3 +1,22 @@
+/**
+ * Schedules and manages periodic tasks using node-cron.
+ * 
+ * This module initializes three daily cron jobs that run at 8:00 AM (Stockholm time):
+ * 1. Updates experience points (XP) for dorms
+ * 2. Updates consumption feedback for dorms
+ * 3. Updates statistics for dorms
+ * 
+ * @requires node-cron
+ * @requires dotenv
+ * @requires ../services/xpUpdateHandler
+ * @requires ../services/feedbackUpdateHandler
+ * @requires ../services/statsUpdater
+ * @requires ../data
+ * 
+ * @remarks
+ * All scheduled tasks are configured to run in the Europe/Stockholm timezone.
+ * The dorms data is loaded at initialization and passed to each update handler.
+ */
 import cron from 'node-cron';
 import dotenv from "dotenv";
 import { updateXP } from '../services/xpUpdateHandler.js';
@@ -22,7 +41,7 @@ cron.schedule('0 8 * * *', () => {
 
 
 
-cron.schedule('0 8 * * *',() => { //run every minute for testing
+cron.schedule('0 8 * * *',() => { 
   console.log('Running feedback update...');
   updateConsumptionFeedback(dorms);
   }, {
@@ -30,7 +49,7 @@ cron.schedule('0 8 * * *',() => { //run every minute for testing
   timezone: 'Europe/Stockholm'
 });
 
-cron.schedule('0 8 * * *',() => { //run every minute for testing
+cron.schedule('0 8 * * *',() => {
   console.log('Running stats update...');
   updateStats(dorms);
   }, {

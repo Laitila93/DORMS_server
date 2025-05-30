@@ -1,3 +1,110 @@
+/**
+ * Class handling data operations for the DORMS application
+ * @class Data
+ */
+
+/**
+ * Interface defining the structure of shop data
+ * @interface ShopData
+ * @property {number} [corridor] - Optional corridor identifier
+ * @property {any} fishes - Fish items data
+ * @property {any} hats - Hat items data
+ * @property {any} specials - Special items data
+ */
+
+/**
+ * Interface for water data fetch options
+ * @interface fetchOptions
+ * @property {Date} [startDate] - Optional start date for the range
+ * @property {Date} [endDate] - Optional end date for the range
+ * @property {number} [daysBack] - Optional number of days to look back
+ */
+
+/**
+ * Retrieves water usage data for a specific dorm
+ * @param {number} dormID - The ID of the dorm
+ * @returns {Promise<any[]>} Array of water usage records
+ * @throws {Error} If database query fails
+ */
+
+/**
+ * Retrieves menu data in specified language
+ * @param {string} [lang="en"] - Language code ("en" or "sv")
+ * @returns {any} Menu data in specified language
+ * @throws {Error} If file loading fails
+ */
+
+/**
+ * Retrieves water test data from JSON file
+ * @returns {any} Water test data
+ * @throws {Error} If file loading fails
+ */
+
+/**
+ * Retrieves shop data in specified language
+ * @param {string} [lang="en"] - Language code
+ * @returns {Promise<ShopData>} Shop items data
+ * @throws {Error} If database query fails
+ */
+
+/**
+ * Retrieves unlocked items for a specific corridor
+ * @param {number} corridor - Corridor identifier
+ * @returns {Promise<ShopData>} Unlocked items data
+ * @throws {Error} If database query fails
+ */
+
+/**
+ * Retrieves equipped items for a specific corridor
+ * @param {number} corridor - Corridor identifier
+ * @returns {Promise<ShopData>} Equipped items data
+ * @throws {Error} If database query fails
+ */
+
+/**
+ * Updates hat assignment for a fish
+ * @param {number} hatID - Hat identifier
+ * @param {number} position - Position of the fish
+ * @param {number} corridorId - Corridor identifier
+ * @throws {Error} If database update fails
+ */
+
+/**
+ * Updates fish in a specific position
+ * @param {number} fishID - Fish identifier
+ * @param {number} position - Position to place the fish
+ * @param {number} corridorId - Corridor identifier
+ * @throws {Error} If database update fails
+ */
+
+/**
+ * Retrieves water consumption data for a specified date range
+ * @param {number} dormID - Dorm identifier
+ * @param {fetchOptions} options - Date range options
+ * @returns {Promise<any[]>} Water consumption data
+ * @throws {Error} If date range is invalid or query fails
+ */
+
+/**
+ * Retrieves current XP for a corridor
+ * @param {number} corridorID - Corridor identifier
+ * @returns {Promise<number>} Current XP value
+ * @throws {Error} If database query fails or XP not found
+ */
+
+/**
+ * Updates XP value for a corridor
+ * @param {number} newXP - New XP value
+ * @param {number} corridorID - Corridor identifier
+ * @param {Date} timestamp - Time of XP update
+ * @throws {Error} If database update fails
+ */
+
+/**
+ * Retrieves all dorm IDs from the database
+ * @returns {Promise<number[]>} Array of dorm IDs
+ * @throws {Error} If database query fails
+ */
 import { readFileSync } from "fs";
 import pool from "./db.js";
 import { Pool } from 'pg';

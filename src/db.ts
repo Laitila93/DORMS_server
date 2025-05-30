@@ -1,4 +1,23 @@
 
+/**
+ * MySQL connection pool configuration and setup.
+ * Creates a connection pool using environment variables for database credentials.
+ * 
+ * Environment variables required:
+ * - DB_HOST: Database host address
+ * - DB_USER: Database user name
+ * - DB_PASSWORD: Database password
+ * - DB_DATABASE: Database name
+ * - DB_PORT: Database port (optional, defaults to 3306)
+ * 
+ * Pool configuration:
+ * - waitForConnections: True - queues connection requests when none are available
+ * - connectionLimit: 10 - maximum number of connections in pool
+ * - queueLimit: 0 - unlimited queue size
+ * 
+ * @module db
+ * @exports pool - MySQL connection pool instance
+ */
 import mysql from "mysql2/promise";
 import dotenv from "dotenv";
 dotenv.config();

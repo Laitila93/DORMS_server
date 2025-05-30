@@ -1,3 +1,21 @@
+/**
+ * Updates water consumption statistics for specified corridors and broadcasts updates via Socket.IO
+ * 
+ * This function:
+ * 1. Iterates through provided corridor IDs
+ * 2. Fetches raw water consumption data for each corridor
+ * 3. Converts raw data to hourly consumption format
+ * 4. Emits the converted stats to connected clients in corridor-specific Socket.IO rooms
+ * 
+ * @param corridorIDs - Array of corridor identification numbers to process
+ * 
+ * @throws Will log error to console if data fetching or processing fails for any corridor
+ * 
+ * @example
+ * ```typescript
+ * await updateStats([1, 2, 3]); // Updates stats for corridors 1, 2, and 3
+ * ```
+ */
 import dotenv from "dotenv";
 import { Data } from "../data.js";
 import { convertToHourlyConsumption } from "../middleware/waterDataConverter.js";
@@ -14,7 +32,6 @@ export async function updateStats(corridorIDs: number[]) {
 
   for (let slot = 0; slot < corridorIDs.length; slot++) {
     const corridorId = corridorIDs[slot];
-    console.log('Running updateStats for corridor:', corridorId);
 
     try {
       const rawData: RawReading[] = await dataInstance.getDbWaterDataByRange(corridorId, { daysBack: days });
@@ -23,7 +40,6 @@ export async function updateStats(corridorIDs: number[]) {
       // ✅ Emit stats to connected clients in the appropriate room
       io.to(`dorm-${corridorId}`).emit("stats:update", { stats: convertedData });
 
-      console.log(`📤 Emitted stats update to dorm-${corridorId}`);
     } catch (err) {
       console.error(`❌ Failed to update stats for corridor ${corridorId}:`, err);
     }

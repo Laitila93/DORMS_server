@@ -1,3 +1,25 @@
+/**
+ * Sets up WebSocket event handlers for various data operations.
+ * Handles authentication and different data requests from clients.
+ * 
+ * @param socket - The Socket.io socket instance for the client connection
+ * @param data - Data access object containing methods for database operations
+ * @param dormID - The ID of the dormitory for authentication
+ * 
+ * @throws Will emit "unauthorized" event if dormID is invalid
+ * 
+ * Socket Events Handled:
+ * - getDbWaterData: Fetches water data from database
+ * - getMenuData: Retrieves menu labels in specified language
+ * - getUnlocks: Gets shop unlock data for a corridor
+ * - getEquipped: Retrieves equipped fish data for a corridor
+ * - getShopData: Fetches shop data in specified language
+ * - getWaterData: Gets water consumption data
+ * - updateHat: Updates hat position data
+ * - updateFish: Updates fish position data
+ * - getXp: Retrieves current XP for a corridor
+ * - getFeedback: Updates consumption feedback for a corridor
+ */
 import { Socket } from "socket.io";
 import { Data } from "./data.js";
 import { updateConsumptionFeedback } from "./services/feedbackUpdateHandler.js";

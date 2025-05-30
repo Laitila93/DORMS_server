@@ -1,5 +1,33 @@
-
-
+/**
+ * Main server setup and configuration file.
+ * Sets up Express server with Socket.IO integration and database connection.
+ * 
+ * @module index
+ * 
+ * Dependencies:
+ * - Express for HTTP server and API routing
+ * - Socket.IO for real-time bidirectional communication
+ * - JWT for authentication
+ * - MySQL database connection pool
+ * 
+ * Features:
+ * - CORS enabled server configuration
+ * - WebSocket authentication using JWT
+ * - Room-based socket connections for dorms
+ * - Database connection testing
+ * - Scheduled scoring system
+ * 
+ * Environment Variables:
+ * - PORT: Server port number (default: 3000)
+ * - JWT_SECRET: Secret key for JWT verification
+ * 
+ * @requires cors
+ * @requires dotenv
+ * @requires http
+ * @requires socket.io
+ * @requires express
+ * @requires jsonwebtoken
+ */
 import cors from "cors";
 import dotenv from "dotenv";
 import { createServer } from "http";
@@ -27,17 +55,14 @@ const io = new Server(httpServer, {
   },
 });
 
-setIO(io); // 👈 Register the io instance
+setIO(io);
 
-// Express middleware
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoutes);
 
-// Data handler for socket usage
 const data = new Data();
 
-// Use example io.to(`dorm-${dormID}`).emit("score:update", { newScore: 50 });
 // WebSocket setup
 io.on("connection", (socket: Socket) => {
   const token = socket.handshake.auth.token;

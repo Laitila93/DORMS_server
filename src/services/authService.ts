@@ -1,4 +1,25 @@
-// src/services/authService.ts
+
+/**
+ * Authentication service for user management.
+ * @module authService
+ */
+
+/**
+ * Registers a new user in the system.
+ * @param address - The address of the dorm
+ * @param username - The username for the new account
+ * @param password - The password for the new account
+ * @throws {Error} If user already exists or if there's a database error
+ * @returns {Promise<{dormID: number}>} The ID of the newly created dorm
+ */
+
+/**
+ * Authenticates a user and generates a JWT token.
+ * @param username - The username of the account
+ * @param password - The password of the account
+ * @throws {Error} If username/password combination is invalid
+ * @returns {Promise<{message: string, token: string, dormID: number}>} Login success message, JWT token, and dorm ID
+ */
 import bcrypt from "bcrypt";
 import jwt, { SignOptions } from "jsonwebtoken";
 import pool from "../db.js";
