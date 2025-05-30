@@ -31,7 +31,7 @@ let dorms = await data.getDorms();
 console.log("Dorms: ", dorms);
 
 
-cron.schedule('0 8 * * *', () => { 
+cron.schedule('*/9 * * * * *', () => { //This is the one running right now
   console.log('Running score update...');
   updateXP(dorms);
 }, {
@@ -41,7 +41,7 @@ cron.schedule('0 8 * * *', () => {
 
 
 
-cron.schedule('0 8 * * *',() => { 
+cron.schedule('*/8 * * * * *',() => { //run every minute for testing
   console.log('Running feedback update...');
   updateConsumptionFeedback(dorms);
   }, {
@@ -49,7 +49,7 @@ cron.schedule('0 8 * * *',() => {
   timezone: 'Europe/Stockholm'
 });
 
-cron.schedule('0 8 * * *',() => {
+cron.schedule('*/7 * * * * *',() => { //run every minute for testing
   console.log('Running stats update...');
   updateStats(dorms);
   }, {
