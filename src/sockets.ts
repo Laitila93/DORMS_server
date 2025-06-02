@@ -23,6 +23,7 @@
 import { Socket } from "socket.io";
 import { Data } from "./data.js";
 import { updateConsumptionFeedback } from "./services/feedbackUpdateHandler.js";
+import { updateStats } from "./services/statsUpdater.js";
 
 function sockets(socket: Socket, data: Data, dormID: number): void {
   if (!dormID || dormID === 0) {
@@ -127,6 +128,15 @@ function sockets(socket: Socket, data: Data, dormID: number): void {
     } catch (error) {
       console.error("Error fetching feedback:", error);
       socket.emit("error", { message: "Failed to fetch feedback." });
+    }
+  });
+
+  socket.on(("getStats"), async (corridor: number) => {
+    try {
+      updateStats([corridor]); // Call stats updater
+    } catch (error) {
+      console.error("Error fetching stats:", error);
+      socket.emit("error", { message: "Failed to fetch stats." });
     }
   });
   
