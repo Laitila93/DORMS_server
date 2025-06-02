@@ -35,10 +35,11 @@ export async function updateStats(corridorIDs: number[]) {
 
     try {
       const rawData: RawReading[] = await dataInstance.getDbWaterDataByRange(corridorId, { daysBack: days });
-      const convertedData: HourlyConsumption[] = convertToHourlyConsumption(rawData);
+      const stats24h: HourlyConsumption[] = convertToHourlyConsumption(rawData);
 
       // ✅ Emit stats to connected clients in the appropriate room
-      io.to(`dorm-${corridorId}`).emit("stats:update", { stats: convertedData });
+      io.to(`dorm-${corridorId}`).emit("stats:update", { stats24h });
+      console.log('✅ Stats updated for corridor:', corridorId, 'with', stats24h);
 
     } catch (err) {
       console.error(`❌ Failed to update stats for corridor ${corridorId}:`, err);

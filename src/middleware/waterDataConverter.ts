@@ -57,7 +57,7 @@ export function convertToDailyConsumption(rawData: RawReading[]): DailyConsumpti
 export function convertToHourlyConsumption(rawData: RawReading[]): HourlyConsumption[] {
   
   const hourlyTotals = new Map<string, number>(); // Map to temporarily store key-value pairs of hours and consumption in liters
-  
+  console.log("Converting raw data to hourly consumption...");
   // 15 rows below are for pre-populating the map with entries for the past 24 hours 
   const oneHourInMs = 60 * 60 * 1000;
   const now = new Date();
@@ -91,7 +91,6 @@ export function convertToHourlyConsumption(rawData: RawReading[]): HourlyConsump
       const hour = pad(adjustedTimestamp.getHours()); //getHours() converts raw data UTC time into local time
 
       const date = `${year}-${month}-${day} ${hour}:00:00`;
-      console.log(date, ": ", entry.amount);
 
       const prevAmount = hourlyTotals.get(date) || 0; //Check for currently registered amount in the map for this hour, default to 0 
       hourlyTotals.set(date, Number(prevAmount) + Number(entry.amount)); // Update the total amount for each hour, or insert a new entry for the hour if it doesn't exist in the map yet 
@@ -106,8 +105,6 @@ export function convertToHourlyConsumption(rawData: RawReading[]): HourlyConsump
   const history: HourlyConsumption[] = Array.from(hourlyTotals.entries()).map(([hour, amount]) => ({hour, amount}));
   history.sort((a, b) => a.hour.localeCompare(b.hour));
   const last24Hours = history.slice(-24); 
-
-  console.log(last24Hours); //for testing
 
   return last24Hours
 
