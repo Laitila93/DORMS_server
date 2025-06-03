@@ -40,7 +40,7 @@ export async function updateXP(corridorIDs: number[]) {
       await dataInstance.setNewXP(updatedXP, corridorId, timestamp); // Await to ensure it's written
 
       // ✅ Emit to room
-      io.to(`dorm-${corridorId}`).emit("xp:update", { updatedXP });
+      io.to(`dorm-${corridorId}`).emit("xp", { updatedXP });
 
     } catch (err) {
       console.error(`❌ Failed to update XP for corridor ${corridorId}:`, err);
