@@ -134,6 +134,7 @@ const pgPool = new Pool({
   port: process.env.PG_DB_PORT ? parseInt(process.env.PG_DB_PORT, 10) : undefined
 });
 
+
 // Explicitly test the DB connection
 (async () => {
   try {
@@ -262,7 +263,6 @@ class Data {
         end = new Date(); 
   
         start.setDate(end.getDate() - options.daysBack);
-        console.log(`Start date: ${start}, end date: ${end}`);
   
       } 
       if(!start || !end) {
@@ -296,7 +296,6 @@ class Data {
           `,
         [corridorID]  
       );
-      console.log("Query result:", rows, corridorID);
 
       const xp = rows[0]?.xp
 

@@ -34,7 +34,7 @@ export async function updateXP(corridorIDs: number[]) {
       const rawData: RawReading[] = await dataInstance.getDbWaterDataByRange(corridorId, { daysBack: days });
       const convertedData: DailyConsumption[] = convertToDailyConsumption(rawData);
       const prevXP = await dataInstance.getCurrentXP(corridorId);
-      const updatedXP = prevXP + calculateScore(convertedData);
+      const updatedXP : number = prevXP + calculateScore(convertedData);
 
       const timestamp = new Date();
       await dataInstance.setNewXP(updatedXP, corridorId, timestamp); // Await to ensure it's written
